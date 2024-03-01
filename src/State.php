@@ -2,7 +2,7 @@
 namespace Tualo\Office\StatusWebsite;
 
 use Tualo\Office\DS\DSTable;
-
+use Tualo\Office\Basic\TualoApplication;
 class State {
 
     public static function setWorkflows():array{
@@ -19,6 +19,9 @@ class State {
     }
 
     public static function getAll():array{
+        $db = TualoApplication::get('session')->db;
+        
+
         $redis = new \Redis();
         
         $list = [];
@@ -29,11 +32,40 @@ class State {
             $data = $redis->get($key);
             $data = json_decode($data,true);
             // $data['key'] = $key;
-            $list[] = $data;
-
-        }
+            $list[] = $data[0];
 
         
+
+
+        $sql = 'insert ignore into status_website_workflow_logger (workflow_id,
+        step_id,
+        region_id,
+        timestamp,
+        microseconds,
+        status_code,
+        status,
+        proto,
+        contentlength,
+        proto_major,
+        proto_minor) values ({step_id},
+        {region_id},
+        {timestamp},
+        {microseconds},
+        {status_code},
+        {status},
+        {proto},
+        {contentlength},
+        {proto_major},
+        {proto_minor})';
+        try {
+            $db->direct($sql,$data[0]);
+        }catch(\Exception $e){
+            TualoApplication::result('msg', $e->getMessage());
+        }
+
+    }
+
+
         return $list;
     }
 }

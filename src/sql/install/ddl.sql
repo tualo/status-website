@@ -81,12 +81,15 @@ insert into status_website_workflow_status (id, name, description) values (202, 
 insert into status_website_workflow_status (id, name, description) values (203, 'Non-Authoritative Information', 'The server is a transforming proxy that received a 200 OK from its origin, but is returning a modified version of the origin''s response');
 insert into status_website_workflow_status (id, name, description) values (204, 'No Content', 'The server successfully processed the request and is not returning any content');
 
+insert into status_website_workflow_protocol (id, name, description) values (0, 'Unkown', 'Unkown');
+insert into status_website_workflow_status (id, name, description) values (0, 'Unkown', 'Unkown');
+
 create table status_website_workflow_logger (
     `workflow_id` int UNSIGNED not null,
     `step_id` int UNSIGNED not null,
     `region_id` int UNSIGNED not null,
     `timestamp` timestamp not null,
-    primary key (`workflow_id`, `step_id`, `region`, `timestamp`),
+    primary key (`workflow_id`, `step_id`, `region_id`, `timestamp`),
 
     `microseconds` int UNSIGNED not null,
     `status_code` int not null,
@@ -101,8 +104,8 @@ create table status_website_workflow_logger (
     CONSTRAINT `fk_status_website_workflow_logger_workflow_id` FOREIGN KEY (`workflow_id`) REFERENCES status_website_workflows(`id`),
     CONSTRAINT `fk_status_website_workflow_logger_step_id` FOREIGN KEY (`step_id`) REFERENCES status_website_workflow_steps(`step_id`),
     CONSTRAINT `fk_status_website_workflow_logger_region_id` FOREIGN KEY (`region_id`) REFERENCES status_website_workflow_regions(`id`),
-    FOREIGN KEY (`proto`) REFERENCES status_website_workflow_protocol(`id`),
-    FOREIGN KEY (`status`) REFERENCES status_website_workflow_status(`id`)
+    CONSTRAINT `fk_status_website_workflow_protocol` FOREIGN KEY (`proto`) REFERENCES status_website_workflow_protocol(`id`),
+    CONSTRAINT `fk_status_website_workflow_status` FOREIGN KEY (`status`) REFERENCES status_website_workflow_status(`id`)
 );
 
 create table status_website_workflow_logger_connection_state (
