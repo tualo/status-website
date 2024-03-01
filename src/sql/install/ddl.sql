@@ -17,6 +17,9 @@ create table status_website_workflows (
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
 
+alter table status_website_workflows add url varchar(255) default "";
+
+
 create table status_website_workflow_steps (
     workflow_id int UNSIGNED not null,
     step_id int UNSIGNED not null,
@@ -31,6 +34,11 @@ create table status_website_workflow_steps (
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
 
+alter table status_website_workflow_steps add primary key (workflow_id, step_id);
+create index `idx_status_website_workflow_steps_workflow` on status_website_workflow_steps(`workflow_id`);
+alter table status_website_workflow_steps add 
+constraint `fk_status_website_workflow_steps_workflow` FOREIGN KEY (`workflow_id`) REFERENCES status_website_workflows(`id`);
+
 
 create table status_website_workflow_regions (
     id int UNSIGNED primary key,
@@ -39,6 +47,18 @@ create table status_website_workflow_regions (
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
+
+
+create table status_website_workflow_workflow_regions (
+    workflow_id int UNSIGNED,
+    region_id int UNSIGNED,
+    primary key (workflow_id, region_id),
+    constraint `fk_status_website_workflow_workflow_regions_workflow` 
+    FOREIGN KEY (`workflow_id`) REFERENCES status_website_workflows(`id`),
+    constraint `fk_status_website_workflow_workflow_regions_region`
+    FOREIGN KEY (`region_id`) REFERENCES status_website_workflow_regions(`id`)
+);
+
 create table status_website_workflow_protocol (
     id int UNSIGNED primary key,
     name varchar(255) not null,

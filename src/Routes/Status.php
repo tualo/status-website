@@ -20,5 +20,18 @@ class Status implements IRoute{
             }
         },['get','post'],true);
 
+   
+        BasicRoute::add('/status-website/workflows',function($matches){
+            try{
+                App::contenttype('application/json');
+
+                App::result('r',S::setWorkflows());
+
+                App::result('success',true);
+            }catch(\Exception $e){
+                App::result('msg', $e->getMessage());
+            }
+        },['get','post'],true);
+
     }
 }
