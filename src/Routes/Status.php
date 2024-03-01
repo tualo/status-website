@@ -18,7 +18,7 @@ class Status implements IRoute{
             }catch(\Exception $e){
                 App::result('msg', $e->getMessage());
             }
-        },['post'],true);
+        },['get','post'],true);
 
     }
 }
