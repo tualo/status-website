@@ -28,9 +28,12 @@ class State {
         foreach( $allKeys as $key ){
             $data = $redis->get($key);
             $data = json_decode($data,true);
-            $data['key'] = $key;
+            // $data['key'] = $key;
             $list[] = $data;
+
         }
+
+        
         return $list;
     }
 }

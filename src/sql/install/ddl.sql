@@ -73,12 +73,18 @@ create table status_website_workflow_status (
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
-
+insert into status_website_workflow_protocol (id, name, description) values (1, 'HTTP', 'Hypertext Transfer Protocol');
+insert into status_website_workflow_protocol (id, name, description) values (2, 'HTTPS', 'Hypertext Transfer Protocol Secure');
+insert into status_website_workflow_status (id, name, description) values (200, 'OK', 'Standard response for successful HTTP requests');
+insert into status_website_workflow_status (id, name, description) values (201, 'Created', 'The request has been fulfilled, resulting in the creation of a new resource');
+insert into status_website_workflow_status (id, name, description) values (202, 'Accepted', 'The request has been accepted for processing, but the processing has not been completed');
+insert into status_website_workflow_status (id, name, description) values (203, 'Non-Authoritative Information', 'The server is a transforming proxy that received a 200 OK from its origin, but is returning a modified version of the origin''s response');
+insert into status_website_workflow_status (id, name, description) values (204, 'No Content', 'The server successfully processed the request and is not returning any content');
 
 create table status_website_workflow_logger (
     `workflow_id` int UNSIGNED not null,
     `step_id` int UNSIGNED not null,
-    `region` int UNSIGNED not null,
+    `region_id` int UNSIGNED not null,
     `timestamp` timestamp not null,
     primary key (`workflow_id`, `step_id`, `region`, `timestamp`),
 
@@ -92,9 +98,9 @@ create table status_website_workflow_logger (
     `proto_major` smallint not null,
     `proto_minor` smallint not null,
 
-    FOREIGN KEY (`workflow_id`) REFERENCES status_website_workflows(`id`),
-    FOREIGN KEY (`step_id`) REFERENCES status_website_workflow_steps(`step_id`),
-    FOREIGN KEY (`region`) REFERENCES status_website_workflow_regions(`id`),
+    CONSTRAINT `fk_status_website_workflow_logger_workflow_id` FOREIGN KEY (`workflow_id`) REFERENCES status_website_workflows(`id`),
+    CONSTRAINT `fk_status_website_workflow_logger_step_id` FOREIGN KEY (`step_id`) REFERENCES status_website_workflow_steps(`step_id`),
+    CONSTRAINT `fk_status_website_workflow_logger_region_id` FOREIGN KEY (`region_id`) REFERENCES status_website_workflow_regions(`id`),
     FOREIGN KEY (`proto`) REFERENCES status_website_workflow_protocol(`id`),
     FOREIGN KEY (`status`) REFERENCES status_website_workflow_status(`id`)
 );
