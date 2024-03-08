@@ -19,7 +19,7 @@ class State {
     }
 
     public static function getAll():array{
-        $db = TualoApplication::get('session')->db;
+        $db = TualoApplication::get('session')->getDB();
         
 
         $redis = new \Redis();
@@ -27,11 +27,12 @@ class State {
         $list = [];
         $redis->connect('127.0.0.1', 6379);
         $redis->select(1);
-        $allKeys = $redis->keys('*');
+        $allKeys = $redis->keys('sample_*');
         foreach( $allKeys as $key ){
             $data = $redis->get($key);
             $data = json_decode($data,true);
             // $data['key'] = $key;
+             
             $list[] = $data[0];
 
         
@@ -47,9 +48,11 @@ class State {
         proto,
         contentlength,
         proto_major,
-        proto_minor) values ({step_id},
+        proto_minor) values (
+            {workflow_id},
+        {step_id},
         {region_id},
-        {timestamp},
+        FROM_UNIXTIME({timestamp}),
         {microseconds},
         {status_code},
         {status},
@@ -59,6 +62,7 @@ class State {
         {proto_minor})';
         try {
             $db->direct($sql,$data[0]);
+            $redis->delete($key);
         }catch(\Exception $e){
             TualoApplication::result('msg', $e->getMessage());
         }
