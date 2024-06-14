@@ -14,7 +14,7 @@ class App implements IRoute{
                 TApp::contenttype('application/json');
                 $export = DSTable::instance('status_website_workflows')->read()->get();
 
-                foreach($export as &$item){
+                foreach($export as $index => $item){
                     
                     
                     $current_since = '-1 day';
@@ -56,8 +56,9 @@ class App implements IRoute{
                     if ($sla[1]!=0)
                     $sla_qoute = ($sla[0]/$sla[1])*100;
 
-                    $item['apdex'] = $apdex;
-                    $item['sla'] = $sla_qoute;
+                    
+                    $export[ $index ]['apdex'] = $apdex;
+                    $export[ $index ]['sla'] = $sla_qoute;
                 }
                  
 
