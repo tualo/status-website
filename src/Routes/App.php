@@ -75,7 +75,7 @@ class App implements IRoute{
 
 
         BasicRoute::add('/status-website-app/workflowinfo/(?P<workflow_id>\w+)',function($matches){
-            $db = App::get('session')->getDB();
+            $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try{
    
