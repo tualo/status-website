@@ -74,6 +74,38 @@ class App implements IRoute{
 
 
 
+        BasicRoute::add('/status-website-app/workflowinfo/(?P<workflow_id>\w+)',function($matches){
+            $db = App::get('session')->getDB();
+            TApp::contenttype('application/json');
+            try{
+   
+                $sql = 'select  avg(microseconds) v from status_website_workflow_logger where workflow_id={workflow_id} and timestamp>now() + interval - 15 minute and status_code=200';
+
+                $avg_current = $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
+                if (!($avg_current)) $avg_current = 0;
+                TApp::result('avg_current', $avg_current);
+
+                $sql = 'select  avg(microseconds) v from status_website_workflow_logger where workflow_id={workflow_id} and timestamp>now() + interval - 24 hour and status_code=200';
+                $avg_24h= $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
+                if (!($avg_24h)) $avg_24h = 0;
+                TApp::result('avg_24h', $avg_24h);
+                
+                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id=60001 and timestamp>now() + interval - 24 hour';
+                $sla_24h= $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
+                if (!($sla_24h)) $sla_24h = 0;
+                TApp::result('sla_24h', $sla_24h);
+
+                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id=60001 and timestamp>now() + interval - 1 month';
+                $sla_month= $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
+                if (!($sla_month)) $sla_month = 0;
+                TApp::result('sla_month', $sla_month);
+
+
+            }catch(\Exception $e){
+                TApp::result('msg', $e->getMessage());
+            }
+        },['get'],true);
+
         /*
         BasicRoute::add('/status-website/workflows',function($matches){
             try{
