@@ -90,12 +90,12 @@ class App implements IRoute{
                 if (!($avg_24h)) $avg_24h = 0;
                 TApp::result('avg_24h', $avg_24h);
                 
-                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id=60001 and timestamp>now() + interval - 24 hour';
+                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id={workflow_id} and timestamp>now() + interval - 24 hour';
                 $sla_24h= $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
                 if (!($sla_24h)) $sla_24h = 0;
                 TApp::result('sla_24h', $sla_24h);
 
-                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id=60001 and timestamp>now() + interval - 1 month';
+                $sql = 'select  avg(if(status_code<200,0,1)) v from status_website_workflow_logger where workflow_id={workflow_id} and timestamp>now() + interval - 1 month';
                 $sla_month= $db->singleValue($sql,['workflow_id'=>$matches['workflow_id']],'v');
                 if (!($sla_month)) $sla_month = 0;
                 TApp::result('sla_month', $sla_month);
