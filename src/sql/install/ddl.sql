@@ -47,6 +47,12 @@ create table status_website_workflow_regions (
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
+alter table status_website_workflow_regions add continent_key varchar(30) default "undefined";
+
+alter table status_website_workflows add apdex_goal int UNSIGNED not null default 800;
+alter table status_website_workflows add sla_goal decimal(15,5) not null default 99.0;
+
+
 
 
 create table status_website_workflow_workflow_regions (

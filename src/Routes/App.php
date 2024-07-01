@@ -100,6 +100,31 @@ class App implements IRoute{
                 if (!($sla_month)) $sla_month = 0;
                 TApp::result('sla_month', $sla_month);
 
+                $sql = 'select 
+
+                    status_website_workflow_regions.continent_key,
+                    status_website_workflows.apdex_goal,
+                    status_website_workflows.sla_goal,
+                    avg(if(status_code<200,0,1)) status_code_response,
+                    avg(if(status_code=200,1,0)) status_code_200,
+                    avg(microseconds) microseconds
+                from 
+                    status_website_workflow_logger
+                    join status_website_workflow_regions 
+                        on status_website_workflow_regions.id = status_website_workflow_logger.region_id 
+                    join status_website_workflows
+                        on status_website_workflows.id = status_website_workflow_logger.workflow_id
+
+                    where workflow_id = {workflow_id}
+                    and timestamp>now() + interval - 24 hour
+
+                group by continent_key
+                ';
+
+                $continents= $db->direct($sql,['workflow_id'=>$matches['workflow_id']]);
+                if (!($continents)) $continents = [];
+                TApp::result('continents', $continents);
+
 
             }catch(\Exception $e){
                 TApp::result('msg', $e->getMessage());
