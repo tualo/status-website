@@ -79,7 +79,7 @@ class App implements IRoute{
                 $export = DSTable::instance('status_website_plans')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->s('position','asc')->read()->get();
                 TApp::result('plans',$export);
 
-                $export = DSTable::instance('status_website_plan_features')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->s('position','asc')->read()->get();
+                $export = DSTable::instance('status_website_plan_features')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->s('plan_id','asc')->s('position','asc')->read()->get();
                 TApp::result('features',$export);
 
                 TApp::result('success',true);
