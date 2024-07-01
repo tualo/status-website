@@ -73,6 +73,19 @@ class App implements IRoute{
         },['get'],true);
 
 
+        BasicRoute::add('/status-website-app/pricing',function($matches){
+            try{
+                TApp::contenttype('application/json');
+                $export = DSTable::instance('status_website_plans')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->read()->get();
+                TApp::result('plans',$export);
+                $export = DSTable::instance('status_website_plan_features')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->read()->get();
+                TApp::result('features',$export);
+
+                TApp::result('success',true);
+            }catch(\Exception $e){
+                TApp::result('msg', $e->getMessage());
+            }
+        },['get'],true);
 
         BasicRoute::add('/status-website-app/workflowinfo/(?P<workflow_id>\w+)',function($matches){
             $db = TApp::get('session')->getDB();
@@ -101,7 +114,6 @@ class App implements IRoute{
                 TApp::result('sla_month', $sla_month);
 
                 $sql = 'select 
-
                     status_website_workflow_regions.continent_key,
                     status_website_workflows.apdex_goal,
                     status_website_workflows.sla_goal,

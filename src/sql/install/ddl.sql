@@ -9,6 +9,32 @@ create table status_website_user (
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
 
+
+
+create table status_website_plans (
+    id int  primary key,
+    name varchar(255) not null,
+    position int not null default 0,
+    price decimal(15,5) not null default 0.0,
+    valid_from date not null default '2099-12-30',
+    valid_until date not null default '2099-12-31',
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp
+);
+
+create table status_website_plan_features (
+    id int  primary key,
+    plan_id int not null,
+    position int not null default 0,
+    name varchar(255) not null,
+    description varchar(255) not null,
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp,
+    constraint `fk_status_website_plan_features_plan_id` FOREIGN KEY (`plan_id`) REFERENCES status_website_plans(`id`) 
+    on delete cascade
+    on update cascade
+);
+
 create table status_website_workflows (
     id int UNSIGNED primary key,
     name varchar(255) not null,
