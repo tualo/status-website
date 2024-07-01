@@ -76,9 +76,10 @@ class App implements IRoute{
         BasicRoute::add('/status-website-app/pricing',function($matches){
             try{
                 TApp::contenttype('application/json');
-                $export = DSTable::instance('status_website_plans')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->read()->get();
+                $export = DSTable::instance('status_website_plans')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->s('position','asc')->read()->get();
                 TApp::result('plans',$export);
-                $export = DSTable::instance('status_website_plan_features')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->read()->get();
+
+                $export = DSTable::instance('status_website_plan_features')->f('valid_from','<=',(new \DateTime())->format('Y-m-d'))->f('valid_until','>=',(new \DateTime())->format('Y-m-d'))->s('position','asc')->read()->get();
                 TApp::result('features',$export);
 
                 TApp::result('success',true);
