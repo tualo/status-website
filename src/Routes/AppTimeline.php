@@ -25,6 +25,7 @@ class AppTimeline implements IRoute{
                 ]);
                 if (!($data)) $data = [];
                 TApp::result('data', $data);
+                TApp::result('success',true);
             }catch(\Exception $e){
                 TApp::result('msg', $e->getMessage());
             }
