@@ -68,7 +68,7 @@ with vorabfrage as (
     month(timestamp),
     day(timestamp),
     hour(timestamp),
-    minute(timestamp),
+    minute(timestamp)
 ),
 status_typ_frage as (
   select
