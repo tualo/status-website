@@ -14,9 +14,10 @@ class AppTimeline implements IRoute{
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try{
-   
-                ;
                 $sql = file_get_contents(__DIR__.'/templates/timeline.sql');
+                if ($matches['region_id']=='all'){
+                    $sql = str_replace('and region_id = {region_id}','',$sql);
+                }
                 $data= $db->direct($sql,[
                     'workflow_id'=>$matches['workflow_id'],
                     'start_timestamp'=>(new \DateTime())->sub(\DateInterval::createFromDateString('1 day'))->format('Y-m-d H:i:s'),
@@ -31,19 +32,6 @@ class AppTimeline implements IRoute{
             }
         },['get'],true);
 
-        /*
-        BasicRoute::add('/status-website/workflows',function($matches){
-            try{
-                TApp::contenttype('application/json');
-
-                TApp::result('r',S::setWorkflows());
-
-                TApp::result('success',true);
-            }catch(\Exception $e){
-                TApp::result('msg', $e->getMessage());
-            }
-        },['get','post'],true);
-        */
 
     }
 }
