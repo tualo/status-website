@@ -1,6 +1,7 @@
 with vorabfrage as (
+
   select
-    timestamp,
+    min(timestamp),
     workflow_id,
     (
       if(
@@ -52,7 +53,7 @@ with vorabfrage as (
         timestamp ROWS BETWEEN CURRENT ROW
         and 1 FOLLOWING
     ) next_ts,
-    region_id,
+    group_concat(region_id separator ',') region_id,
     max(status_code) status_code,
     avg(microseconds) microseconds
   from
@@ -69,6 +70,7 @@ with vorabfrage as (
     day(timestamp),
     hour(timestamp),
     minute(timestamp)
+
 ),
 status_typ_frage as (
   select
