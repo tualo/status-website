@@ -53,14 +53,22 @@ with vorabfrage as (
         and 1 FOLLOWING
     ) next_ts,
     region_id,
-    status_code,
-    microseconds
+    max(status_code) status_code,
+    avg(microseconds) microseconds
   from
     status_website_workflow_logger
   where
     workflow_id = {workflow_id}
     and timestamp between {start_timestamp} and {stop_timestamp}
     and region_id = {region_id}
+  group by
+    
+    workflow_id,
+    year(timestamp),
+    month(timestamp),
+    day(timestamp),
+    hour(timestamp),
+    minute(timestamp),
 ),
 status_typ_frage as (
   select
