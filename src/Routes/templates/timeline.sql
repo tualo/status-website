@@ -1,7 +1,7 @@
 with vorabfrage as (
 
   select
-    min(timestamp),
+    min(timestamp) timestamp,
     workflow_id,
     (
       if(
