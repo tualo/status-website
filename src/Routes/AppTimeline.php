@@ -28,7 +28,7 @@ class AppTimeline implements IRoute{
                 if (count($data)==1){
                     $data[] = $data[0];
                     $data[0]['stop_timestamp'] =$data[0]['start_timestamp'];
-                    $data[0]['cluster_id'] = 99999;
+                    $data[1]['cluster_id'] = "99999";
                 }
                 TApp::result('data', $data);
                 TApp::result('success',true);
