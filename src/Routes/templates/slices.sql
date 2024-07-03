@@ -2,7 +2,7 @@ with preset as (
     select 
         {workflow_id} workflow_id,
         {region_id} region_id,
-        30 buckets,
+        {buckets} buckets,
         {start_timestamp} start_datetime,
         {stop_timestamp} stop_datetime
 ), datas as (

@@ -10,7 +10,7 @@ use Tualo\Office\StatusWebsite\State as S;
 class AppSlices implements IRoute{
     public static function register(){
        
-        BasicRoute::add('/status-website-app/slices/(?P<workflow_id>\w+)/(?P<region_id>\w+)',function($matches){
+        BasicRoute::add('/status-website-app/slices/(?P<workflow_id>\w+)/(?P<region_id>\w+/(?P<buckets>\w+)',function($matches){
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             echo 'HERE';
@@ -23,7 +23,8 @@ class AppSlices implements IRoute{
                     'workflow_id'=>$matches['workflow_id'],
                     'start_timestamp'=>(new \DateTime())->sub(\DateInterval::createFromDateString('1 day'))->format('Y-m-d H:i:s'),
                     'stop_timestamp'=>(new \DateTime())->format('Y-m-d H:i:s'),
-                    'region_id'=>$matches['region_id']
+                    'region_id'=>$matches['region_id'],
+                    'buckets'=>$matches['buckets'],
                 ]);
                 if (!($data)) $data = [];
                 if (count($data)==1){
