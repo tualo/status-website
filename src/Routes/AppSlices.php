@@ -13,7 +13,6 @@ class AppSlices implements IRoute{
         BasicRoute::add('/status-website-app/slices/(?P<workflow_id>\w+)/(?P<region_id>\w+/(?P<buckets>\w+)',function($matches){
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
-            echo 'HERE';
             try{
                 $sql = file_get_contents(__DIR__.'/templates/slices.sql');
                 if ($matches['region_id']=='all'){
