@@ -10,7 +10,7 @@ use Tualo\Office\StatusWebsite\State as S;
 class AppSlices implements IRoute{
     public static function register(){
        
-        BasicRoute::add('/status-website-app/slices/(?P<workflow_id>\w+)/(?P<region_id>\w+/(?P<buckets>\w+)',function($matches){
+        BasicRoute::add('/status-website-app/slices/(?P<workflow_id>\w+)/(?P<region_id>\w+)/(?P<buckets>\w+)',function($matches){
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try{
