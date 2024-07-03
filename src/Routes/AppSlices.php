@@ -26,14 +26,14 @@ class AppSlices implements IRoute{
                     'buckets'=>$matches['buckets'],
                 ]);
                 if (!($data)) $data = [];
-                if (count($data)==1){
+               /* if (count($data)==1){
                     $data[] = $data[0];
                     $data[0]['stop_timestamp'] =$data[0]['start_timestamp'];
 
                     $data[1]['start_timestamp'] =$data[1]['stop_timestamp'];
                     
                     $data[1]['cluster_id'] = "99999";
-                }
+                }*/
                 TApp::result('data', $data);
                 TApp::result('success',true);
             }catch(\Exception $e){
