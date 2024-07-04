@@ -16,7 +16,7 @@ class AppSlices implements IRoute{
             try{
                 $sql = file_get_contents(__DIR__.'/templates/slices.sql');
                 if ($matches['region_id']=='all'){
-                    $sql = str_replace('and region_id = {region_id}','',$sql);
+                    $sql = str_replace('and status_website_workflow_logger.region_id =preset.region_id','',$sql);
                 }
                 $data= $db->direct($sql,[
                     'workflow_id'=>$matches['workflow_id'],
