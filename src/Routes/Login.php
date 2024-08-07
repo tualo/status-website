@@ -15,7 +15,7 @@ class Login implements IRoute
 {
     public static function register()
     {
-        BasicRoute::add('/status-website-app/info', function ($matches) {
+        BasicRoute::add('/status-website-app/userinfo', function ($matches) {
             $db = TApp::get('session')->getDB();
             $session = new Session();
             TApp::contenttype('application/json');
@@ -32,6 +32,7 @@ class Login implements IRoute
                 if ($user === false) {
                     throw new \Exception('username not found');
                 }
+                
                 if ($session->get('status_website_user',false)) {
                     // logged in user append user data
                 }
