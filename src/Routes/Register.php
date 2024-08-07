@@ -37,7 +37,7 @@ class Register implements IRoute
                 }
                 $user = DSTable::instance('status_website_user')->insert([
                     'username' => $payload['username'],
-                    'password' => password_hash($payload['password'], PASSWORD_DEFAULT),
+                    'password' => password_hash($payload['password'], PASSWORD_BCRYPT),
                     'email' => $payload['email'],
                     'status' => 'pending',
                     'created_at' => date('Y-m-d H:i:s'),
