@@ -11,7 +11,7 @@ use Tualo\Office\PUG\PUG;
 use Tualo\Office\StatusWebsite\State as S;
 use Tualo\Office\CMS\CMSMiddleware\Session;
 
-class Register implements IRoute
+class Login implements IRoute
 {
     public static function register()
     {
