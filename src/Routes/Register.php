@@ -28,7 +28,9 @@ class Register implements IRoute
                 if (!isset($payload['sw_username'])) {
                     throw new \Exception('username is missing');
                 }
-                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
+                $userTable = DSTable::instance('status_website_user');
+
+                $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if (count($user)!==0) {
                     // ggf test ob es eine erneute registrierung ist
                     throw new \Exception('username already exists');
@@ -36,7 +38,7 @@ class Register implements IRoute
                 if ($payload['sw_password'] !== $payload['sw_password2']) {
                     throw new \Exception('passwords do not match');
                 }
-                $user = DSTable::instance('status_website_user')->insert([
+                $user = $userTable->insert([
                     'username' => $payload['sw_username'],
                     'password' => password_hash($payload['sw_password'], PASSWORD_BCRYPT),
                     'email' => $payload['sw_email'],
@@ -45,11 +47,11 @@ class Register implements IRoute
                     'updated_at' => date('Y-m-d H:i:s'),
                     'pin' => rand(100000, 999999)
                 ]);
-                if ($user->error()) {
-                    throw new \Exception($user->errorMessage());
+                if ($userTable->error()) {
+                    throw new \Exception($userTable->errorMessage());
                 }
 
-                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
+                $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if (count($user)==0) {
                     throw new \Exception('not able to create user');
                 }
