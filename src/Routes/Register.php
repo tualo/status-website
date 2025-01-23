@@ -21,7 +21,7 @@ class Register implements IRoute
             try {
                 
                 $payload = $_POST;// json_decode(@file_get_contents('php://input'), true);
-                $formMail = TApp::configuration('status-website', 'mail.from', '---');
+                $fromMail = TApp::configuration('status-website', 'mail.from', '---');
                 if (!isset($payload['sw_email'])) {
                     throw new \Exception('email is missing');
                 }
@@ -45,12 +45,16 @@ class Register implements IRoute
                     'updated_at' => date('Y-m-d H:i:s'),
                     'pin' => rand(100000, 999999)
                 ]);
+                if ($user->error()) {
+                    throw new \Exception($user->errorMessage());
+                }
+                
                 $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if (count($user)!==0) {
                     throw new \Exception('not able to create user');
                 }
                 $mail = SMTP::get();
-                $mail->setFrom($formMail);
+                $mail->setFrom($fromMail);
                 $mail->addAddress($user['email']);
                 $mail->Subject = "Ihre Authentifikation-PIN";
                 $mail->isHTML(true);
