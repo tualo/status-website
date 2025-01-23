@@ -48,9 +48,9 @@ class Register implements IRoute
                 if ($user->error()) {
                     throw new \Exception($user->errorMessage());
                 }
-                
+
                 $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
-                if (count($user)!==0) {
+                if (count($user)==0) {
                     throw new \Exception('not able to create user');
                 }
                 $mail = SMTP::get();
