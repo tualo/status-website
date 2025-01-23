@@ -19,7 +19,7 @@ class Register implements IRoute
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try {
-                $payload = json_decode(@file_get_contents('php://input'), true);
+                $payload = $_POST;// json_decode(@file_get_contents('php://input'), true);
                 $formMail = TApp::configuration('status-website', 'mail.from', '---');
                 if (!isset($payload['sw_email'])) {
                     throw new \Exception('email is missing');
