@@ -7,6 +7,7 @@ class Authorize implements IMiddleware{
         TualoApplication::use('StatusWebsite_SW_Auth',function(){
             try{
                 $session = TualoApplication::get('session');
+                if (!is_null($session))
                 if ($session->getHeader('SW-Authorization') !== false) {
                     $authToken = $session->getHeader('SW-Authorization');
                     if (($key = TualoApplication::configuration('oauth', 'key')) !== false) {
