@@ -10,6 +10,21 @@ create table status_website_user (
 );
 
 
+create table status_website_user_token (
+    status_website_user_id int ,
+    fingerprint varchar(36),
+    token longtext not null,
+    primary key(status_website_user_id,fingerprint),
+    key `idx_status_website_user_token_fingerprint` (fingerprint),
+    valid_until timestamp not null default current_timestamp,
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp,
+
+    constraint `fk_status_website_user_token_token` FOREIGN KEY (`status_website_user_id`) REFERENCES status_website_user(`id`) 
+    on delete cascade
+    on update cascade
+);
+
 
 create table status_website_plans (
     id int  primary key,

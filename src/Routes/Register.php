@@ -21,30 +21,30 @@ class Register implements IRoute
             try {
                 $payload = json_decode(@file_get_contents('php://input'), true);
                 $formMail = TApp::configuration('status-website', 'mail.from', '---');
-                if (!isset($payload['email'])) {
+                if (!isset($payload['sw_email'])) {
                     throw new \Exception('email is missing');
                 }
-                if (!isset($payload['username'])) {
+                if (!isset($payload['sw_username'])) {
                     throw new \Exception('username is missing');
                 }
-                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['username'])->read()->getSingle();
+                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if ($user !== false) {
                     // ggf test ob es eine erneute registrierung ist
                     throw new \Exception('username already exists');
                 }
-                if ($payload['password'] !== $payload['password2']) {
+                if ($payload['sw_password'] !== $payload['sw_password2']) {
                     throw new \Exception('passwords do not match');
                 }
                 $user = DSTable::instance('status_website_user')->insert([
-                    'username' => $payload['username'],
-                    'password' => password_hash($payload['password'], PASSWORD_BCRYPT),
-                    'email' => $payload['email'],
+                    'username' => $payload['sw_username'],
+                    'password' => password_hash($payload['sw_password'], PASSWORD_BCRYPT),
+                    'email' => $payload['sw_email'],
                     'status' => 'pending',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'pin' => rand(100000, 999999)
                 ]);
-                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['username'])->read()->getSingle();
+                $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if ($user !== false) {
                     throw new \Exception('not able to create user');
                 }
