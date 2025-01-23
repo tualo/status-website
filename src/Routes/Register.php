@@ -29,7 +29,7 @@ class Register implements IRoute
                     throw new \Exception('username is missing');
                 }
                 $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
-                if ($user !== false) {
+                if (count($user)!==0) {
                     // ggf test ob es eine erneute registrierung ist
                     throw new \Exception('username already exists');
                 }
@@ -46,7 +46,7 @@ class Register implements IRoute
                     'pin' => rand(100000, 999999)
                 ]);
                 $user = DSTable::instance('status_website_user')->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
-                if ($user !== false) {
+                if (count($user)!==0) {
                     throw new \Exception('not able to create user');
                 }
                 $mail = SMTP::get();
