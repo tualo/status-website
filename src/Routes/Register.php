@@ -19,8 +19,8 @@ class Register implements IRoute
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try {
-                
-                $payload = $_POST;// json_decode(@file_get_contents('php://input'), true);
+
+                $payload = $_POST; // json_decode(@file_get_contents('php://input'), true);
                 $fromMail = TApp::configuration('status-website', 'mail.from', '---');
                 if (!isset($payload['sw_email'])) {
                     throw new \Exception('email is missing');
@@ -31,7 +31,7 @@ class Register implements IRoute
                 $userTable = DSTable::instance('status_website_user');
 
                 $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
-                if (count($user)!==0) {
+                if (count($user) !== 0) {
                     if ($user['status'] !== 'pending') {
                         throw new \Exception('username already exists');
                     }
@@ -39,21 +39,31 @@ class Register implements IRoute
                 if ($payload['sw_password'] !== $payload['sw_password2']) {
                     throw new \Exception('passwords do not match');
                 }
-                $user = $userTable->insert([
-                    'username' => $payload['sw_username'],
-                    'password' => password_hash($payload['sw_password'], PASSWORD_BCRYPT),
-                    'email' => $payload['sw_email'],
-                    'status' => 'pending',
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'pin' => rand(100000, 999999)
-                ],['type'=>'insert','update'=>true]);
+                if (count($user) !== 0) {
+                    $user = $userTable->update([
+                        'id' => $user['id'],
+                        'password' => password_hash($payload['sw_password'], PASSWORD_BCRYPT),
+                        'email' => $payload['sw_email'],
+                        'status' => 'pending',
+                        'pin' => rand(100000, 999999)
+                    ]);
+                } else {
+                    $user = $userTable->insert([
+                        'username' => $payload['sw_username'],
+                        'password' => password_hash($payload['sw_password'], PASSWORD_BCRYPT),
+                        'email' => $payload['sw_email'],
+                        'status' => 'pending',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'pin' => rand(100000, 999999)
+                    ]);
+                }
                 if ($userTable->error()) {
                     throw new \Exception($userTable->errorMessage());
                 }
 
                 $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
-                if (count($user)==0) {
+                if (count($user) == 0) {
                     throw new \Exception('not able to create user');
                 }
 
