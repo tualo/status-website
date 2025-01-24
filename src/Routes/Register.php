@@ -19,6 +19,7 @@ class Register implements IRoute
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
             try {
+                TApp::result('success', false);
                 $payload = $_POST; // json_decode(@file_get_contents('php://input'), true);
                 if (!isset($payload['sw_username'])) {
                     throw new \Exception('username is missing');
