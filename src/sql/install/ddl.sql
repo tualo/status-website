@@ -8,6 +8,16 @@ create table status_website_user (
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp
 );
+alter table status_website_user add status varchar(25) default '';
+alter table status_website_user add pin varchar(25) default '';
+
+
+CREATE TRIGGER `trigger_status_website_user_bi_generate_id`
+    BEFORE INSERT
+    ON `status_website_user` FOR EACH ROW
+BEGIN
+    SET NEW.id = (select ifnull(max(id),150000) +1 from status_website_user);
+END //  
 
 
 create table status_website_user_token (

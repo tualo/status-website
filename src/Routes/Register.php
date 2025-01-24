@@ -55,6 +55,18 @@ class Register implements IRoute
                 if (count($user)==0) {
                     throw new \Exception('not able to create user');
                 }
+
+                /*
+                \Tualo\Office\Mail\Spooler::addMail(
+                    "Deine Authentifikations-PIN",
+                    'eventservice@kaiserwerke.de',
+                    $cms['session']->get('mail'),
+                    strip_tags(\Tualo\Office\PUG\PUG::render('text-mail-pin',[ 'data'=>[
+                        'ticketname'=>$cms['session']->get('tickettypes',[['name'=>'FEHLER']])[0]['name'],
+                        'emailPIN'=>$cms['session']->get('emailPIN','*****')
+                    ] ]))
+                );
+                */
                 $mail = SMTP::get();
                 $mail->setFrom($fromMail);
                 $mail->addAddress($user['email']);
