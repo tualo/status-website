@@ -15,6 +15,35 @@ class Register implements IRoute
     public static function register()
     {
 
+        BasicRoute::add('/status-website-app/confirmPin', function ($matches) {
+            $db = TApp::get('session')->getDB();
+            TApp::contenttype('application/json');
+            try {
+                $payload = $_POST; // json_decode(@file_get_contents('php://input'), true);
+                if (!isset($payload['sw_username'])) {
+                    throw new \Exception('username is missing');
+                }
+                if (!isset($payload['sw_pin'])) {
+                    throw new \Exception('pin is missing');
+                }
+
+
+                $userTable = DSTable::instance('status_website_user');
+                $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
+                if (count($user) !== 0) {
+                    if ($user['pin'] == $payload['sw_pin']) {
+                        TApp::result('success', true);
+                    } else {
+                        throw new \Exception('pin is wrong');
+                    }
+                } else {
+                    throw new \Exception('user not found');
+                }
+            } catch (\Exception $e) {
+                TApp::result('msg', $e->getMessage());
+            }
+        }, ['post'], true);
+
         BasicRoute::add('/status-website-app/register', function ($matches) {
             $db = TApp::get('session')->getDB();
             TApp::contenttype('application/json');
