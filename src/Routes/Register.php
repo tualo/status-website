@@ -47,7 +47,7 @@ class Register implements IRoute
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'pin' => rand(100000, 999999)
-                ]);
+                ],['type'=>'insert','update'=>true]);
                 if ($userTable->error()) {
                     throw new \Exception($userTable->errorMessage());
                 }
