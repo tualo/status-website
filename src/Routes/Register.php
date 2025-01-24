@@ -32,8 +32,9 @@ class Register implements IRoute
 
                 $user = $userTable->f('username', 'eq', $payload['sw_username'])->read()->getSingle();
                 if (count($user)!==0) {
-                    // ggf test ob es eine erneute registrierung ist
-                    throw new \Exception('username already exists');
+                    if ($user['status'] !== 'pending') {
+                        throw new \Exception('username already exists');
+                    }
                 }
                 if ($payload['sw_password'] !== $payload['sw_password2']) {
                     throw new \Exception('passwords do not match');
