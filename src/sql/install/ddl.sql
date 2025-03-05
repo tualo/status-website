@@ -69,7 +69,7 @@ create table status_website_workflows (
 );
 
 alter table status_website_workflows add url varchar(255) default "";
-
+alter table status_website_workflows add enabled tinyint default 1;
 
 create table status_website_workflow_steps (
     workflow_id int UNSIGNED not null,

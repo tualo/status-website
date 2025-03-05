@@ -35,6 +35,7 @@ json_object(
 from 
 status_website_workflows wf 
 join status_website_workflow_workflow_regions wfr on wfr.workflow_id = wf.id
+    and wf.enabled = 1
 join status_website_workflow_regions r on wfr.region_id = r.id 
 join status_website_workflow_steps wfs on  wf.id = wfs.workflow_id
 
