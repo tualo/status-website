@@ -1,24 +1,29 @@
 {
-    "name": "tualo/status-website",
-    "description": "tualo - status-website",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Thomas Hoffmann",
-            "email": "thomas.hoffmann@tualo.de"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Tualo\\Office\\StatusWebsite\\": "src/"
-        },
-        "files": ["src/functions.php"]
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "ramsey/uuid": "*",
-        "tualo/tualopgp": "*",
-        "phpseclib/phpseclib": "*"
+  "name": "tualo/status-website",
+  "description": "tualo - status-website",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Hoffmann",
+      "email": "thomas.hoffmann@tualo.de"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tualo\\Office\\StatusWebsite\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "ramsey/uuid": "~4.9.0",
+    "tualo/tualopgp": "^1.0.1",
+    "phpseclib/phpseclib": "~3.0.46",
+    "tualo/ds": "^1.0.1",
+    "tualo/cms": "^1.0.1"
+  },
+  "version": "1.0.1"
 }
