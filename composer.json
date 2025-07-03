@@ -20,10 +20,10 @@
   "minimum-stability": "dev",
   "require": {
     "ramsey/uuid": "~4.9.0",
-    "tualo/tualopgp": "^1.0.1",
+    "tualo/tualopgp": "^1.0",
     "phpseclib/phpseclib": "~3.0.46",
-    "tualo/ds": "^1.0.1",
-    "tualo/cms": "^1.0.1"
+    "tualo/ds": "^1.0",
+    "tualo/cms": "^1.0"
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
